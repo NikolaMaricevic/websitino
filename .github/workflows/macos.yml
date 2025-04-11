@@ -38,12 +38,12 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: websitino-${{ matrix.os }}
-        path: websitino-${{ matrix.os }}
+        path: websitino
 
     - name: Prepara directory per GitHub Pages
       run: |
         mkdir -p public/macos
-        cp websitino-${{ matrix.os }} public/macos/
+        cp websitino public/macos/websitino-${{ matrix.os }}
 
     # Pubblica su GitHub Pages
     - name: Deploy su GitHub Pages
