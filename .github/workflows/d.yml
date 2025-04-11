@@ -42,7 +42,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: websitino
-        path: websitino
+        path: ./linux/websitino
         
     - name: Create Release
       uses: actions/create-release@v1
@@ -60,6 +60,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: websitino
-        asset_name: websitino
+        asset_path: ./linux/websitino
+        asset_name: ./linux/websitino
         asset_content_type: application/octet-stream
