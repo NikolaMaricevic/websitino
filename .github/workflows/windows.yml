@@ -32,7 +32,7 @@ jobs:
 
     - name: 'Build & Test'
       run: |
-        dub build --compiler=$DC --build=release --config=musl
+        dub build --compiler=ldc2 --build=release --config=musl
 
     - name: Upload binary as artifact
       uses: actions/upload-artifact@v4
