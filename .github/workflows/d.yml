@@ -8,6 +8,8 @@ on:
 jobs:
   build-and-export:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
     # Checkout the repository
