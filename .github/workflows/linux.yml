@@ -24,7 +24,7 @@ jobs:
         RUN apk add vim gcc musl-dev ldc dub llvm-libunwind-static openssl-libs-static gzip upx cmake make
         WORKDIR /app
         COPY . .
-        CMD [\"dub\", \"build\", \"--build=release\", \"--config=musl\"]" > Dockerfile
+        CMD [\"dub\", \"build\", \"--build=release\", \"--config=linux-static\"]" > Dockerfile
         docker build -t websitino-image .
 
     # Run the Docker container to build the project
