@@ -49,12 +49,8 @@ jobs:
     # Prepara la directory per GitHub Pages
     - name: Prepara directory per GitHub Pages
       run: |
-        mkdir -p public
-        cp websitino public/
-        echo "Websitino nightly build" > public/index.html
-        echo "Download: <a href='websitino'>websitino</a>" >> public/index.html
-        echo "Build date: $(date)" >> public/index.html
-        echo "Commit: ${GITHUB_SHA::7}" >> public/index.html
+        mkdir -p public/linux
+        cp websitino public/linux/
 
     # Pubblica su GitHub Pages
     - name: Deploy su GitHub Pages
