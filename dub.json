@@ -1,0 +1,27 @@
+{
+	"authors": [
+		"Andrea Fontana"
+	],
+
+	"copyright": "Copyright © 2025-, Andrea Fontana",
+	"dependencies": {
+		"serverino": "~master"
+	},
+
+	"configurations": [
+
+		{
+			"name": "default",
+			"targetType": "executable"
+		},
+
+		{
+			"name": "musl",
+			"targetType": "executable",
+			"dflags": ["-static", "-nodefaultlib"]
+		}
+	],
+
+	"license": "MIT",
+	"name": "websitino"
+}

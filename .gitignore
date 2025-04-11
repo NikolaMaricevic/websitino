@@ -1,0 +1,16 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/websitino
+websitino.so
+websitino.dylib
+websitino.dll
+websitino.a
+websitino.lib
+websitino-test-*
+*.exe
+*.pdb
+*.o
+*.obj
+*.lst
