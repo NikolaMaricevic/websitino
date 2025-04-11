@@ -43,3 +43,21 @@ jobs:
       with:
         name: websitino
         path: websitino
+
+    # Prepara la directory per GitHub Pages
+    - name: Prepara directory per GitHub Pages
+      run: |
+        mkdir -p public
+        cp websitino public/
+        echo "Websitino nightly build" > public/index.html
+        echo "Download: <a href='websitino'>websitino</a>" >> public/index.html
+        echo "Build date: $(date)" >> public/index.html
+        echo "Commit: ${GITHUB_SHA::7}" >> public/index.html
+
+    # Pubblica su GitHub Pages
+    - name: Deploy su GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./public
+        force_orphan: true
