@@ -40,6 +40,12 @@ jobs:
         name: websitino-${{ matrix.os }}
         path: websitino
 
+    - name: Pull latest changes
+      run: |
+        git fetch origin
+        git checkout gh-pages
+        git pull origin gh-pages
+
     - name: Prepara directory per GitHub Pages
       run: |
         mkdir -p public/${{ matrix.os }}

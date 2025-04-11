@@ -46,6 +46,12 @@ jobs:
         name: websitino
         path: websitino
 
+    - name: Pull latest changes
+      run: |
+        git fetch origin
+        git checkout gh-pages
+        git pull origin gh-pages
+
     # Prepara la directory per GitHub Pages
     - name: Prepara directory per GitHub Pages
       run: |
