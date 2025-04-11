@@ -270,6 +270,19 @@ void logger(Request request, Output output)
 	// If the user asked for --help or the port is not set, show the usage and exit with code 1.
 	if (showHelp)
 	{
+		// Enable terminal colors on older windows
+      version(Windows)
+      {
+         import core.sys.windows.windows;
+
+         DWORD dwMode;
+         HANDLE hOutput = GetStdHandle(STD_OUTPUT_HANDLE);
+
+         GetConsoleMode(hOutput, &dwMode);
+         dwMode |= ENABLE_PROCESSED_OUTPUT | ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+         SetConsoleMode(hOutput, dwMode);
+      }
+
 		string help = "\n\x1b[32mwebsitino 0.1 \x1b[0m\nFile serving, simplified.\x1b[0m\n\n\x1b[32mUsage:\x1b[0m
 websitino \x1b[2m[path] [options...]\x1b[0m
 
