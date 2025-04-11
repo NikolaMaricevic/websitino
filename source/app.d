@@ -147,7 +147,7 @@ auto staticServe(Request request, Output output)
 		{
 			output.addHeader("Content-Type", "text/plain; charset=utf-8");
 
-			output ~= i"\n Directory listing for $(relativePath)/\n\n".text;
+			output ~= i"\n Directory listing for $(relativePath)\n\n".text;
 
 			// First show directories
 			foreach(entry; directories)
