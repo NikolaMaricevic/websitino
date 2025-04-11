@@ -1,0 +1,54 @@
+name: Build websitino (linux-static)
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-export:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the repository
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # Set up Docker build
+    - name: Build Docker image
+      run: |
+        echo "commit: ${GITHUB_SHA::7}" > version
+        echo "FROM alpine:latest
+        RUN apk add vim gcc musl-dev ldc dub llvm-libunwind-static openssl-libs-static gzip upx cmake make
+        WORKDIR /app
+        COPY . .
+        CMD [\"dub\", \"build\", \"--build=release\", \"--config=musl\"]" > Dockerfile
+        docker build -t websitino-image .
+
+    # Run the Docker container to build the project
+    - name: Run Docker container and build project
+      run: |
+        docker run --name websitino-container websitino-image || true
+
+    # Copy compiled file from Docker container to host
+    - name: Copy compiled binary
+      run: |
+        docker cp websitino-container:/app/websitino .
+        docker rm websitino-container
+        strip -s websitino
+
+    # Upload the binary as an artifact
+    - name: Upload binary as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: websitino
+        path: websitino
+
+    - name: Upload to Dropbox
+      uses: Lewuathe/dropbox-github-action@v1
+      with:
+        dropbox-app-key: ${{ secrets.DROPBOX_APP_KEY }}
+        dropbox-app-secret: ${{ secrets.DROPBOX_APP_SECRET }}
+        dropbox-refresh-token: ${{ secrets.DROPBOX_REFRESH_TOKEN }}
+        source-path: websitino
+        target-path: /release/linux/websitino
