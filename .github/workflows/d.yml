@@ -43,12 +43,23 @@ jobs:
       with:
         name: websitino
         path: websitino
-
-    - name: Upload to Dropbox
-      uses: Lewuathe/dropbox-github-action@v1
+        
+    - name: Create Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        dropbox-app-key: ${{ secrets.DROPBOX_APP_KEY }}
-        dropbox-app-secret: ${{ secrets.DROPBOX_APP_SECRET }}
-        dropbox-refresh-token: ${{ secrets.DROPBOX_REFRESH_TOKEN }}
-        source-path: websitino
-        target-path: /release/linux/websitino
+        tag_name: nightly
+        release_name: Nightly Build
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: websitino
+        asset_name: websitino
+        asset_content_type: application/octet-stream
