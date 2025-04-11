@@ -42,8 +42,8 @@ jobs:
 
     - name: Prepara directory per GitHub Pages
       run: |
-        mkdir -p public/macos
-        cp websitino public/macos-${{ matrix.os }}/websitino
+        mkdir -p public/${{ matrix.os }}
+        cp websitino public/${{ matrix.os }}/websitino
 
     # Pubblica su GitHub Pages
     - name: Deploy su GitHub Pages
