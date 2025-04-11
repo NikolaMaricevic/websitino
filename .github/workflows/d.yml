@@ -42,24 +42,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: websitino
-        path: ./linux/websitino
-        
-    - name: Create Release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: nightly
-        release_name: Nightly Build
-        draft: false
-        prerelease: false
-
-    - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./linux/websitino
-        asset_name: ./linux/websitino
-        asset_content_type: application/octet-stream
+        path: websitino
