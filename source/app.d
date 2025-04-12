@@ -16,6 +16,8 @@ bool useIndexFile = false;
 
 mixin ServerinoMain;
 
+static if (!__traits(compiles, WEBSITINO_VERSION)) enum WEBSITINO_VERSION = i"[unofficial build: $(__DATE__) $(__TIME__)]".text;
+
 // Serve the file or directory
 @endpoint
 auto staticServe(Request request, Output output)
@@ -283,7 +285,7 @@ void logger(Request request, Output output)
          SetConsoleMode(hOutput, dwMode);
       }
 
-		string help = "\n\x1b[32mwebsitino 0.1 \x1b[0m\nFile serving, simplified.\x1b[0m\n\n\x1b[32mUsage:\x1b[0m
+		string help = "\n\x1b[32mwebsitino "~ WEBSITINO_VERSION ~" \x1b[0m\nFile serving, simplified.\x1b[0m\n\n\x1b[32mUsage:\x1b[0m
 websitino \x1b[2m[path] [options...]\x1b[0m
 
 \x1b[32mOptions:\x1b[0m
