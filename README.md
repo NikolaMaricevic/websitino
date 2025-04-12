@@ -17,3 +17,11 @@ Run `websitino` in your project directory to start serving files immediately.
 To enable directory listing, use `websitino --list-dirs`. You can also use `websitino --index` to automatically serve index.html files when present in directories.
 
 For a complete list of available options, run `websitino --help`.
+
+## Screenshot
+
+Running `websitino --list-dirs` will show something like this in browser:
+![image](https://github.com/user-attachments/assets/100a1f83-c4a3-4ab9-8bd1-21367bbed0b5)
+
+and like this with curl:
+![image](https://github.com/user-attachments/assets/3b6bed0b-d076-4a58-82ca-fec2ccf28bc3)
