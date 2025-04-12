@@ -20,8 +20,10 @@ For a complete list of available options, run `websitino --help`.
 
 ## Screenshot
 
-Running `websitino --list-dirs` will show something like this in browser:
-![image](https://github.com/user-attachments/assets/100a1f83-c4a3-4ab9-8bd1-21367bbed0b5)
+When running `websitino --list-dirs`, directory contents will be displayed:
 
-and like this with curl:
-![image](https://github.com/user-attachments/assets/3b6bed0b-d076-4a58-82ca-fec2ccf28bc3)
+**In browser:**
+![Directory listing in browser](https://github.com/user-attachments/assets/100a1f83-c4a3-4ab9-8bd1-21367bbed0b5)
+
+**In terminal (curl):**
+![Directory listing in terminal](https://github.com/user-attachments/assets/3b6bed0b-d076-4a58-82ca-fec2ccf28bc3)
