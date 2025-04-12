@@ -54,6 +54,43 @@ jobs:
         name: websitino
         path: websitino
 
+    - name: Create deb package
+      #if: startsWith(github.ref, 'refs/tags/v')
+      run: |
+        VERSION=$(echo ${{ github.ref }} | sed 's/refs\/tags\///')
+
+        mkdir -p websitino-$VERSION/DEBIAN
+        mkdir -p websitino-$VERSION/usr/bin
+        mkdir -p websitino-$VERSION/usr/share/doc/websitino
+
+        echo "Package: websitino" > websitino-$VERSION/DEBIAN/control
+        echo "Version: $VERSION" >> websitino-$VERSION/DEBIAN/control
+        echo "Section: web" >> websitino-$VERSION/DEBIAN/control
+        echo "Priority: optional" >> websitino-$VERSION/DEBIAN/control
+        echo "Architecture: amd64" >> websitino-$VERSION/DEBIAN/control
+        echo "Maintainer: Andrea Fontana <me@andreafontana.it>" >> websitino-$VERSION/DEBIAN/control
+        echo "Description: A lightweight static file server for local development. Perfect for testing static websites and serving files with minimal setup." >> websitino-$VERSION/DEBIAN/control
+
+        cp websitino websitino-$VERSION/usr/bin/
+        cp LICENSE websitino-$VERSION/usr/share/doc/websitino/
+        cp README.md websitino-$VERSION/usr/share/doc/websitino/
+
+        echo "#!/bin/bash" > websitino-$VERSION/DEBIAN/postinst
+        echo "chmod +x /usr/bin/websitino" >> websitino-$VERSION/DEBIAN/postinst
+        chmod +x websitino-$VERSION/DEBIAN/postinst
+
+        dpkg-deb --build websitino-$VERSION
+        rm -rf websitino-$VERSION/*
+
+    # Upload the binary as an artifact
+    - name: Upload deb package as artifact
+      #if: startsWith(github.ref, 'refs/tags/v')
+      uses: actions/upload-artifact@v4
+      with:
+        name: websitino-$VERSION.deb
+        path: websitino-$VERSION.deb
+
+
     - name: Pull latest changes
       run: |
         git checkout -- source/app.d
@@ -63,8 +100,10 @@ jobs:
 
     # Prepara la directory per GitHub Pages
     - name: Prepara directory per GitHub Pages
+      if: startsWith(github.ref, 'refs/tags/v')
       run: |
         mkdir -p public/linux
+        cp websitino-$VERSION.deb public/linux/websitino.deb
         cp websitino public/linux/
 
     # Pubblica su GitHub Pages
