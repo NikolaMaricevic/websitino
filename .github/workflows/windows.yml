@@ -49,8 +49,9 @@ jobs:
 
     - name: Pull latest changes
       run: |
+        git checkout -- source/app.d
         git fetch origin
-        git checkout -f gh-pages
+        git checkout gh-pages
         git pull origin gh-pages
 
     - name: Prepara directory per GitHub Pages
