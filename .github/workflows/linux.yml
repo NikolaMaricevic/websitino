@@ -50,10 +50,9 @@ jobs:
     - name: Create deb package
       run: |
         if [[ "${{ github.ref }}" == refs/tags/* ]]; then
-          VERSION=$(echo ${{ github.ref }} | sed 's/refs\/tags\///')
+          VERSION=$(echo ${{ github.ref }} | sed 's/refs\/tags\/v*//')
         else
-          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "0.0.0")
-          VERSION="${LATEST_TAG}-dev"
+          VERSION="0.0.0-dev"
         fi
 
         echo "Creating deb package for version $VERSION"
