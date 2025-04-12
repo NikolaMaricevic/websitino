@@ -10,6 +10,13 @@ A lightweight static file server for local development. Perfect for testing stat
 - **Cross-platform**: Works on Linux, macOS and Windows
 - **Secure by default**: Hidden files/directories not served unless explicitly enabled
 
+## Download & build
+
+You can download pre-built binaries for your operating system directly from the [download page](https://trikko.github.io/websitino/).
+
+Alternatively, if you have the [D programming language](https://dlang.org) compiler installed, you can build and run the project with: `dub run websitino`
+
+
 ## Usage
 
 Run `websitino` in your project directory to start serving files immediately.
