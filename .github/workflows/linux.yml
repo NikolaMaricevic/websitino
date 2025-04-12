@@ -47,18 +47,15 @@ jobs:
         docker rm websitino-container
         strip -s websitino
 
-    # Upload the binary as an artifact
-    - name: Upload binary as artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: websitino
-        path: websitino
-
     - name: Create deb package
-      #if: startsWith(github.ref, 'refs/tags/v')
       run: |
-        VERSION=0.0.1
-        #VERSION=$(echo ${{ github.ref }} | sed 's/refs\/tags\///')
+        if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+          VERSION=$(echo ${{ github.ref }} | sed 's/refs\/tags\///')
+        else
+          VERSION="dev"
+        fi
+
+        echo "Creating deb package for version $VERSION"
 
         mkdir -p websitino-$VERSION/DEBIAN
         mkdir -p websitino-$VERSION/usr/bin
@@ -82,14 +79,21 @@ jobs:
 
         dpkg-deb --build websitino-$VERSION
         rm -rf websitino-$VERSION/*
+        mv websitino-$VERSION.deb websitino.deb
 
     # Upload the binary as an artifact
-    - name: Upload deb package as artifact
-      #if: startsWith(github.ref, 'refs/tags/v')
+    - name: Upload binary as artifact
       uses: actions/upload-artifact@v4
       with:
-        name: websitino-$VERSION.deb
-        path: websitino-$VERSION.deb
+        name: websitino
+        path: websitino
+
+    # Upload the deb package as an artifact
+    - name: Upload deb package as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: websitino.deb
+        path: websitino.deb
 
 
     - name: Pull latest changes
@@ -104,7 +108,7 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/v')
       run: |
         mkdir -p public/linux
-        cp websitino-$VERSION.deb public/linux/websitino.deb
+        cp websitino.deb public/linux/websitino.deb
         cp websitino public/linux/
 
     # Pubblica su GitHub Pages
