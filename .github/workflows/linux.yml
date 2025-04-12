@@ -60,6 +60,7 @@ jobs:
 
     # Pubblica su GitHub Pages
     - name: Deploy su GitHub Pages
+      if: startsWith(github.ref, 'refs/tags/v')
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
