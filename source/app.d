@@ -75,7 +75,9 @@ auto staticServe(Request request, Output output)
 		return showError(output, 403, "Forbidden");
 
 	// Which file user asked for?
-	string toServe = buildNormalizedPath(pathToServe, "." ~ decode(request.path));
+	string toServe;
+	try { toServe = buildNormalizedPath(pathToServe, "." ~ decode(request.path)); }
+	catch (Exception e) { return showError(output, 400, "Bad request"); }
 
 	// Check if the user asked for a file that is not in the root directory.
 	// This should not happen, but just in case.
@@ -136,7 +138,7 @@ auto staticServe(Request request, Output output)
 
 		// If the user asked for a directory listing, but the listDirectories flag is not set, return a 403.
 		if (listDirectories == false)
-			return showError(output, 403, "Forbidden. Directory listing is disabled.");
+			return showError(output, 403, "Forbidden. Directory listing is disabled.\nTry running websitino with the --list-dirs or -l option.");
 
 		// Check if the request comes from a browser or CLI
 		auto userAgent = request.header.read("user-agent").toLower;
