@@ -1,6 +1,6 @@
 # Websitino
 
-A lightweight static file server for local development. Perfect for testing static websites and serving files with minimal setup. 
+A lightweight static file server for local development. Perfect for testing static websites and serving files with minimal setup.
 
 Inspired by [aferust](https://github.com/aferust/servefolder/).
 
@@ -11,6 +11,7 @@ Inspired by [aferust](https://github.com/aferust/servefolder/).
 - **Fast & efficient**: Built for performance
 - **Cross-platform**: Works on Linux, macOS and Windows
 - **Secure by default**: Hidden files/directories not served unless explicitly enabled
+- **Markdown rendering**: Add `?format` to any .md file URL to render it as HTML
 
 ## Download & build
 

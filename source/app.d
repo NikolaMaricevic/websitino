@@ -41,7 +41,7 @@ bool useIndexFile = false;
 
 mixin ServerinoMain;
 
-static if (!__traits(compiles, WEBSITINO_VERSION)) enum WEBSITINO_VERSION = i"[unofficial build: $(__DATE__) $(__TIME__)]".text;
+static if (!__traits(compiles, WEBSITINO_VERSION)) enum WEBSITINO_VERSION = i"unofficial build: $(__DATE__) $(__TIME__)".text;
 
 // Serve the file or directory
 @endpoint
@@ -96,18 +96,53 @@ auto staticServe(Request request, Output output)
 			return showError(output, 403, "Forbidden. Serving a single file.");
 
 		// Serve the file.
-		output.serveFile(toServe);
+		if (toServe.endsWith(".md") && request.get.has("format"))
+		{
+			// Create an HTML viewer for the markdown file
+			output.addHeader("Content-Type", "text/html; charset=utf-8");
+
+			string html =
+			(`<!DOCTYPE html>
+				<html>
+				<head>
+				<meta charset="utf-8">
+				<title>` ~ toServe.baseName ~ `</title>
+				<meta name="viewport" content="width=device-width, initial-scale=1.0">
+				<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+				<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css">
+				<style>
+					body { font-family: sans-serif; max-width: 800px; margin: 2em auto; line-height: 1.5; padding: 0 15px; }
+					pre { background-color: #f5f5f5; padding: 1em; border-radius: 5px; overflow-x: auto; }
+					code { background-color: #f5f5f5; padding: 0.2em 0.4em; border-radius: 3px; }
+					img { max-width: 100%; }
+				</style>
+				</head>
+				<body>
+				<div class="markdown-body" id="content"></div>
+
+				<script>
+					fetch("` ~ request.path ~ `")
+						.then(res => res.text())
+						.then(md => { document.getElementById("content").innerHTML = marked.parse(md); });
+				</script>
+				</body>
+			</html>`).strip();
+
+			output ~= html;
+		}
+		else
+			output.serveFile(toServe);
 	}
 
 	else
 	{
-		// If --index is set, serve index.html if it exists.
+		// If --index is set, serve the specified index file if it exists.
 		if (useIndexFile)
 		{
 			string indexPath = buildNormalizedPath(toServe, "index.html");
 			if (exists(indexPath) && isFile(indexPath))
 			{
-				// Serve the index.html file.
+				// Serve the index file.
 				output.serveFile(indexPath);
 				return Fallthrough.Yes;
 			}
@@ -197,7 +232,7 @@ auto staticServe(Request request, Output output)
 			// Start building the HTML page
 			string html = i"<html><head><title>Directory listing for $(relativePath)</title>".text;
 
-			// Aggiungiamo il meta tag viewport per il responsive design
+			// Add the viewport meta tag for responsive design
 			html ~= "<meta name='viewport' content='width=device-width, initial-scale=1.0'>";
 
 			html ~= "<style>
@@ -312,18 +347,21 @@ void logger(Request request, Output output)
          SetConsoleMode(hOutput, dwMode);
       }
 
-		string help = "\n\x1b[32mwebsitino "~ WEBSITINO_VERSION ~" \x1b[0m\nFile serving, simplified.\x1b[0m\n\n\x1b[32mUsage:\x1b[0m
+		string help = "\n\x1b[32mwebsitino ("~ WEBSITINO_VERSION ~") \x1b[0m\nFile serving, simplified.\x1b[0m\n\n\x1b[32mUsage:\x1b[0m
 websitino \x1b[2m[path] [options...]\x1b[0m
 
 \x1b[32mOptions:\x1b[0m
  \x1b[1m --list-dirs   -l\x1b[0m                Show directory listings (default: disabled).
- \x1b[1m --index       -i\x1b[0m                Look for and serve index.html files when browsing directories. (default: disabled)
+ \x1b[1m --index       -i\x1b[0m                Use index.html when browsing directories.
  \x1b[1m --show-hidden -s\x1b[0m                Serve hidden files (default: disabled).
  \x1b[1m --auth        -a\x1b[0m  <user:pass>   Set the authentication string. (default: disabled)
  \x1b[1m --port        -p\x1b[0m  <port>        Set the port to listen on. (default: 8123)
  \x1b[1m --bind        -b\x1b[0m  <ip_address>  Set the ip address to listen on. (default: 0.0.0.0)
  \x1b[1m --verbose     -v\x1b[0m                Enable request logging (default: disabled).
  \x1b[1m --help        -h\x1b[0m                Show this help.
+
+\x1b[32mFeatures:\x1b[0m
+ \x1b[1m Markdown rendering\x1b[0m              Add ?format to any .md file URL to render it as HTML.
 ";
 
 		writeln(help);
