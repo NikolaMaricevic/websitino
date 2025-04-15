@@ -96,17 +96,19 @@ auto staticServe(Request request, Output output)
 			return showError(output, 403, "Forbidden. Serving a single file.");
 
 		// Serve the file.
-		if (toServe.endsWith(".md") && request.get.has("format"))
+		string format = request.get.read("format", "false");
+
+		if (toServe.endsWith(".md") && (format == "true" || format == "1" || format.empty))
 		{
 			// Create an HTML viewer for the markdown file
 			output.addHeader("Content-Type", "text/html; charset=utf-8");
 
-			string html =
+			static immutable html =
 			(`<!DOCTYPE html>
 				<html>
 				<head>
 				<meta charset="utf-8">
-				<title>` ~ toServe.baseName ~ `</title>
+				<title>%TITLE%</title>
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
 				<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 				<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css">
@@ -121,14 +123,14 @@ auto staticServe(Request request, Output output)
 				<div class="markdown-body" id="content"></div>
 
 				<script>
-					fetch("` ~ request.path ~ `")
+					fetch("%URL%")
 						.then(res => res.text())
 						.then(md => { document.getElementById("content").innerHTML = marked.parse(md); });
 				</script>
 				</body>
-			</html>`).strip();
+			</html>`).splitter("\n").map!(line => line.strip).join("");
 
-			output ~= html;
+			output ~= html.replace("%TITLE%", toServe.baseName).replace("%URL%", request.path);
 		}
 		else
 			output.serveFile(toServe);
@@ -222,7 +224,7 @@ auto staticServe(Request request, Output output)
 				output ~= " " ~ formatFileSize(entry.size) ~ " 📄 " ~ entry.name.baseName ~ "\n";
 
 			// Add a footer with a link to the websitino project.
-			output ~= "\n Served with ♥  by websitino [ https://github.com/trikko/websitino ]\n";
+			output ~= "\n Served with ♥  by websitino [ https://github.com/trikko/websitino ]\n\n";
 		}
 		else
 		{
@@ -230,12 +232,13 @@ auto staticServe(Request request, Output output)
 			output.addHeader("Content-Type", "text/html; charset=utf-8");
 
 			// Start building the HTML page
-			string html = i"<html><head><title>Directory listing for $(relativePath)</title>".text;
+			string html = i"<!DOCTYPE html><html><head><title>Directory listing for $(relativePath)</title>".text;
 
 			// Add the viewport meta tag for responsive design
 			html ~= "<meta name='viewport' content='width=device-width, initial-scale=1.0'>";
 
-			html ~= "<style>
+			static immutable style =
+			`<style>
 				body{font-family:sans-serif;max-width:800px;margin:2em auto;line-height:1.5;padding:0 15px}
 				a{text-decoration:none}
 				.entry{display:grid;grid-template-columns:2em 1fr 8em;margin-bottom:0.5em}
@@ -247,8 +250,9 @@ auto staticServe(Request request, Output output)
 				.size{text-align:right}
 				.filename{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 				footer{text-align:center;margin-top:2em;color:#666;font-size:0.9em}
-			</style>";
+			</style>`.splitter("\n").map!(line => line.strip).join("");
 
+			html ~= style;
 			html ~= "</head><body>";
 			html ~= "<h1>📁 " ~ relativePath ~ "</h1><hr>";
 
