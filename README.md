@@ -13,6 +13,10 @@ Inspired by [aferust](https://github.com/aferust/servefolder/).
 - **Secure by default**: Hidden files/directories not served unless explicitly enabled
 - **Markdown rendering**: Add `?format` to any .md file URL to render it as HTML
 
+## Quick install
+
+To download and install the latest release: `curl https://trikko.github.io/websitino/install.sh | bash`
+
 ## Download & build
 
 You can download pre-built binaries for your operating system directly from the [download page](https://trikko.github.io/websitino/).
